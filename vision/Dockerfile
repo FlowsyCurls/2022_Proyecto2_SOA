@@ -1,15 +1,21 @@
-# For more information, please refer to https://aka.ms/vscode-docker-python
+# Specify the Parent Image from which we are building
 FROM python:3.10
 
-# Workspace
-WORKDIR /services/vision
-
-# Install pip requirements
+# Copy dependencies txt
 COPY requirements.txt .
+
+# Install dependencies or requirements
 RUN pip install --no-cache-dir --upgrade pip \
   && pip install --no-cache-dir -r requirements.txt
+
+# Copy current environment
 COPY . .
 
+# Set workspace
+WORKDIR /app
+
+# Copy app modules
 COPY . /app
 
-CMD ["python", "./app/main.py"]
+# Default executable of a Docker image
+CMD ["python", "main.py"]

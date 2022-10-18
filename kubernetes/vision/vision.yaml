@@ -1,46 +1,42 @@
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: backend
+  name: vision
+  labels:
+    app: vision
 spec:
   selector:
     matchLabels:
-      app: backend
-      tier: backend
-      track: stable
+      app: vision
   replicas: 1
   template:
     metadata:
       labels:
-        app: backend
-        tier: backend
-        track: stable
+        app: vision
     spec:
       containers:
-        - name: backend
-          image: jeykime/backend:latest
+        - name: vision
+          image: jeykime/vision:latest
+          imagePullPolicy: Always
           ports:
-            - name: http
-              containerPort: 5000
+            - containerPort: 80
           env:
             - name: RABBIT_HOST
               value: "rabbitmq-0.rabbitmq.rabbits.svc.cluster.local"
             - name: RABBIT_PORT
               value: "5672"
-            - name: RABBIT_CONSUMER_QUEUE
-              value: "emotions_queue"
+            - name: RABBIT_PRODUCER_QUEUE
+              value: "emotions-queue"
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: backend
+  name: vision
 spec:
   selector:
-    app: backend
-    tier: backend
+    app: vision
   ports:
     - protocol: TCP
-      port: 5000
+      port: 80
       targetPort: http

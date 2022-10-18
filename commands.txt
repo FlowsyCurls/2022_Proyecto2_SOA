@@ -21,9 +21,15 @@ docker tag <your-image-id> <dockerhub-username>/<repo-name>:<tag>
 # push image in docker hub
 docker push <dockerhub-username>/<repo-name>
 
+# Run with shell
+docker run --rm -it test sh
+
+
 
 # RUN RABBIT image
 docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3.9-management
+
+
 
 
 
@@ -39,7 +45,18 @@ minikube addons enable gcp-auth
 kubectl create ns rabbits
 
 # apply all yaml file in kubernetes
-kubectl apply -n rabbits -f kubernetes -f ./kubernetes/db -f ./kubernetes/rabbit
+kubectl apply -n rabbits -f ./kubernetes/rabbit
+kubectl apply -n rabbits -f ./kubernetes/db
+kubectl apply -n rabbits -f ./kubernetes/ui.yaml
+kubectl apply -n rabbits -f ./kubernetes/vision.yaml
+kubectl apply -n rabbits -f ./kubernetes/backend.yaml
+
+# delete all services file in kubernetes
+kubectl delete -n rabbits -f ./kubernetes/rabbit
+kubectl delete -n rabbits -f ./kubernetes/db
+kubectl delete -n rabbits -f ./kubernetes/ui.yaml
+kubectl delete -n rabbits -f ./kubernetes/vision.yaml
+kubectl delete -n rabbits -f ./kubernetes/backend.yaml
 
 # get pods
 kubectl -n rabbits get pods

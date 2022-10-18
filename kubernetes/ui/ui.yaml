@@ -1,7 +1,7 @@
 apiVersion: apps/v1 # Kubernetes API version
 kind: Deployment  # Kubernetes resource kind we are creating
 metadata:
-  name: angular-deployment
+  name: angular
 spec:
   selector:
     matchLabels:
@@ -22,7 +22,7 @@ spec:
 kind: Service  # Kubernetes API version
 apiVersion: v1 # Kubernetes resource kind we are creating
 metadata:
-  name: angular-service
+  name: angular
 spec:
   selector:
     app: angular

@@ -1,59 +1,54 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: database
-  labels:
-    app: database
+  name: mysql
 spec:
   selector:
     matchLabels:
-      app: database
-  replicas: 1
+      app: mysql
+  strategy:
+    type: Recreate
   template:
     metadata:
       labels:
-        app: database
+        app: mysql
     spec:
       containers:
         - image: mysql:5.6
           name: mysql
           env:
-          - name: RABBIT_HOST 
-            value: "rabbitmq-0.rabbitmq.rabbits.svc.cluster.local"
-          - name: RABBIT_PORT
-            value: "5672"
-          - name: MYSQL_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: mysql-secret
-                key: password
-          - name: MYSQL_DB
-            value: "emotions_db"
-          - name: MYSQL_USER
-            value: "root"
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: password
+            - name: RABBIT_HOST
+              value: "rabbitmq-0.rabbitmq.rabbits.svc.cluster.local"
+            - name: RABBIT_PORT
+              value: "5672"
+            - name: MYSQL_DATABASE
+              value: "emotions_db"
+            - name: MYSQL_USER
+              value: "user"
+            - name: MYSQL_PASSWORD
+              value: "password"
           ports:
             - containerPort: 3306
-              name: database
+              name: mysql
           volumeMounts:
-            - name: database-persistent-storage
+            - name: mysql-persistent-storage
               mountPath: /var/lib/mysql
       volumes:
-        - name: database-persistent-storage
+        - name: mysql-persistent-storage
           persistentVolumeClaim:
-            claimName: database-pv-claim
+            claimName: mysql-pv-claim
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: database
-  labels:
-    app: database
+  name: mysql
 spec:
-  type: LoadBalancer
-  selector:
-    app: database
   ports:
-    - protocol: TCP
-      name: http
-      port: 3306
-      targetPort: 3306
+    - port: 3306
+  selector:
+    app: mysql
