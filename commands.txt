@@ -62,4 +62,5 @@ kubectl delete -n rabbits -f ./kubernetes/backend.yaml
 kubectl -n rabbits get pods
 
 # use kubectl to forward the port
-kubectl -n rabbits port-forward rabbitmq-0 8080:5672
+kubectl port-forward service/angular-service 8080:80 -n rabbits
+kubectl -n rabbits port-forward rabbitmq-0 8080:15672

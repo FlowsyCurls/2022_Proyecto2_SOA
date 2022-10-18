@@ -26,7 +26,7 @@ spec:
             - name: RABBIT_PORT
               value: "5672"
             - name: RABBIT_PRODUCER_QUEUE
-              value: "emotions-queue"
+              value: "emotions_queue"
 
 ---
 apiVersion: v1
