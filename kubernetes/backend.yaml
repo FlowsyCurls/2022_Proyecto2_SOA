@@ -22,14 +22,14 @@ spec:
           image: jeykime/backend:latest
           ports:
             - name: http
-              containerPort: 81
+              containerPort: 5000
           env:
-          - name: RABBIT_HOST 
-            value: "rabbitmq-0.rabbitmq.rabbits.svc.cluster.local"
-          - name: RABBIT_PORT
-            value: "5672"
-          - name: RABBIT_CONSUMER_QUEUE
-            value: "emotions_queue"
+            - name: RABBIT_HOST
+              value: "rabbitmq-0.rabbitmq.rabbits.svc.cluster.local"
+            - name: RABBIT_PORT
+              value: "5672"
+            - name: RABBIT_CONSUMER_QUEUE
+              value: "emotions_queue"
 
 ---
 apiVersion: v1
@@ -41,6 +41,6 @@ spec:
     app: backend
     tier: backend
   ports:
-  - protocol: TCP
-    port: 81
-    targetPort: http
+    - protocol: TCP
+      port: 5000
+      targetPort: http

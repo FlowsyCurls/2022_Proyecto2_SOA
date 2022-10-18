@@ -7,12 +7,13 @@ import json
 
 app = Flask(__name__)
 
-app.config['MYSQL_HOST'] = os.environ['RABBIT_HOST']
-app.config['MYSQL_USER'] = os.environ['MYSQL_USER']
-app.config['MYSQL_PASSWORD'] = os.environ['MYSQL_PASSWORD']
-app.config['MYSQL_DB'] = os.environ['MYSQL_DB']
 
-mysql = MySQL(app)
+# app.config['MYSQL_HOST'] = os.environ['RABBIT_HOST']
+# app.config['MYSQL_USER'] = os.environ['MYSQL_USER']
+# app.config['MYSQL_PASSWORD'] = os.environ['MYSQL_PASSWORD']
+# app.config['MYSQL_DB'] = os.environ['MYSQL_DB']
+
+# mysql = MySQL(app)
 class Person():
     
     def __init__(self, name, emotion, date):
@@ -27,39 +28,47 @@ class Person():
             "date": self.date
         }
 
+isCreated = False
+
 @app.route('/', methods=['GET'])
 def get_records():
 
     # Creating a connection cursor
-    cursor = mysql.connection.cursor()
+    # cursor = mysql.connection.cursor()
     
     # Executing SQL Statements
     query_string = "SELECT * FROM emotions_table"
-    cursor.execute(query_string)
+    # cursor.execute(query_string)
     
     # Fetches all rows from the last executed statement
-    result = cursor.fetchall()
+    # result = cursor.fetchall()
         
     # output list
     output = []
     
     # Iterate over the rows
-    for row in result:
-        person = Person(row[1],row[2],row[3])
-        output.append(person.to_json())
+    # for row in result:
+        # person = Person(row[1],row[2],row[3])
+        # output.append(person.to_json())
         
     # we close both the cursor and connection
-    cursor.close()
+    # cursor.close()
     
     return jsonify(output)
     
 def create_record(data):
     
+    # Ensure that the table exists
+    global isCreated
+    if not isCreated:
+        createTable()
+        isCreated = True
+        
     # Parse string to JSON object
     data = json.loads(data)
     
     # Creating a connection cursor
-    cursor = mysql.connection.cursor()
+    # cursor = mysql.connection.cursor()
     
     # query to execute
     query_string = "INSERT INTO emotions_analysis VALUES(%s,%s,%s)"
@@ -67,15 +76,30 @@ def create_record(data):
     # Iterate and add the information to the table
     print("Adding Data")
     for person in data:
-        
+        print(person['name'], person['emotion'],person['date'])
         #Executing SQL Statements
-        cursor.execute(query_string,person['name'],person['emotion'],person['date'])
+        # cursor.execute(query_string,person['name'],person['emotion'],person['date'])
         
     #Saving the Actions performed on the DB
-    mysql.connection.commit()
+    # mysql.connection.commit()
     
     # we close both the cursor and connection
-    cursor.close()
+    # cursor.close()
 
+
+def createTable():
+    # Creating a connection cursor
+    # cursor = mysql.connection.cursor()
+    
+    # Query for Creating the table
+    query_string = "CREATE TABLE emotions_analysis (id int NOT NULL PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255), emotion VARCHAR(255), date VARCHAR(255))"
+    
+    #Executing SQL Statement
+    # cursor.execute(query_string)
+    
+    #Saving the Actions performed on the DB
+    # mysql.connection.commit()
+    
 def run():
-    app.run(host='localhost', port=5000)
+    app.run(debug=True, host='0.0.0.0')
+    

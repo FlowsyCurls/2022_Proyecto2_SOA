@@ -1,5 +1,7 @@
 UTILS COMMANDS
 
+#DOCKER
+
 # Login
 docker login --username=<your-username>
 
@@ -22,3 +24,25 @@ docker push <dockerhub-username>/<repo-name>
 
 # RUN RABBIT image
 docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3.9-management
+
+
+
+# MINIKUBE
+
+# start
+minikube start
+
+# give google permision to use pods
+minikube addons enable gcp-auth
+
+# set namespace
+kubectl create ns rabbits
+
+# apply all yaml file in kubernetes
+kubectl apply -n rabbits -f kubernetes -f ./kubernetes/db -f ./kubernetes/rabbit
+
+# get pods
+kubectl -n rabbits get pods
+
+# use kubectl to forward the port
+kubectl -n rabbits port-forward rabbitmq-0 8080:5672

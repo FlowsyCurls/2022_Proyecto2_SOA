@@ -15,18 +15,18 @@ spec:
         app: emotions
     spec:
       containers:
-      - name: emotions
-        image: jeykime/vision:latest
-        imagePullPolicy: Always
-        ports:
-        - containerPort: 80
-        env:
-        - name: RABBIT_HOST 
-          value: "rabbitmq-0.rabbitmq.rabbits.svc.cluster.local"
-        - name: RABBIT_PORT
-          value: "5672"
-        - name: RABBIT_PRODUCER_QUEUE
-          value: "emotions-queue"
+        - name: emotions
+          image: jeykime/vision:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          env:
+            - name: RABBIT_HOST
+              value: "rabbitmq-0.rabbitmq.rabbits.svc.cluster.local"
+            - name: RABBIT_PORT
+              value: "5672"
+            - name: RABBIT_PRODUCER_QUEUE
+              value: "emotions-queue"
 
 ---
 apiVersion: v1
@@ -37,6 +37,6 @@ spec:
   selector:
     app: emotions
   ports:
-  - protocol: TCP
-    port: 80
-    targetPort: http
+    - protocol: TCP
+      port: 80
+      targetPort: http

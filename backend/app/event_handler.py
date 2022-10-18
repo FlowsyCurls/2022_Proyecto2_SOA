@@ -18,6 +18,7 @@ def consume():
     host = os.environ['RABBIT_HOST']
     port = os.environ['RABBIT_PORT']
     queue = os.environ['RABBIT_CONSUMER_QUEUE']
+    # queue = 'testing'
     
     # create a connection to the locally running rabbitmq message broker
     # connection_parameters = pika.ConnectionParameters('localhost')

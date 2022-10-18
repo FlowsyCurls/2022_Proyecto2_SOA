@@ -11,6 +11,7 @@ def produce(message):
     host = os.environ['RABBIT_HOST']
     port = os.environ['RABBIT_PORT']
     queue = os.environ['RABBIT_PRODUCER_QUEUE']
+    # queue = 'testing'
 
     # create a connection to the locally running rabbitmq message broker
     # connection_parameters = pika.ConnectionParameters('localhost')
@@ -27,7 +28,7 @@ def produce(message):
     
     # publish message by using a default exchange (empty string)
     channel.basic_publish(exchange='', routing_key=queue, body=json.dumps(message))
-    print(f"sent message: {message}")
+    print(f"sent message:", json.dumps(message,indent=2))
 
     # close connection
     connection.close()
