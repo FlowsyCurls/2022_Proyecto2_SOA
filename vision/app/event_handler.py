@@ -28,7 +28,7 @@ def produce(message):
     
     # publish message by using a default exchange (empty string)
     channel.basic_publish(exchange='', routing_key=queue, body=json.dumps(message))
-    print(f"▶ sent message:", json.dumps(message,indent=2))
+    print(f"⭐ sent message:", json.dumps(message,indent=2))
 
     # close connection
     connection.close()

@@ -11,16 +11,18 @@ config = {
     'user': 'user',
     'password': 'password',
     'host': 'localhost',
-    'port': '64885',
+    'port': '49153',
     'database': 'emotions_db'
 }
 
 # This function creates the desired table into the database when its initilized
+
+
 def createTable():
     try:
         # Estabilishing  a connection cursor
         connection = mysql.connector.connect(**config)
-        print(connection)
+
         # Query for Creating the table
         query_string = """CREATE TABLE IF NOT EXISTS emotions_table (
                         id int NOT NULL PRIMARY KEY AUTO_INCREMENT, 
@@ -37,16 +39,41 @@ def createTable():
         # Saving the Actions performed on the DB
         connection.commit()
 
-        print("Table created successfully ")
+        print("● Table created successfully ")
 
     except mysql.connector.Error as error:
-        print("Failed to create table in MySQL: {}".format(error))
+        print("❎ Failed to create table in MySQL: {}".format(error))
     finally:
         if connection.is_connected():
             cursor.close()
             connection.close()
-            print("MySQL connection is closed")
 
+def delete_records():
+    try:
+        # Estabilishing  a connection cursor
+        connection = mysql.connector.connect(**config)
+        
+        # Query for Creating the table
+        query_string = "DELETE FROM emotions_table"
+        
+        # Creating a connection cursor
+        cursor = connection.cursor()
+
+        # Executing SQL Statement
+        cursor.execute(query_string)
+
+        # Saving the Actions performed on the DB
+        connection.commit()
+        print("\n✅ "+str(cursor.rowcount),
+              "record(s) deleted successfully from table")
+
+    except mysql.connector.Error as error:
+        print("❎ Failed to delete record from table: {}".format(error))
+    finally:
+        if connection.is_connected():
+            cursor.close()
+            connection.close()
+            
 # This function insert single and multiple rows into the database table.
 def create_record(data):
     try:
@@ -54,35 +81,39 @@ def create_record(data):
         connection = mysql.connector.connect(**config)
 
         # Query for Creating the table
-        query_string = "INSERT INTO emotions_analysis VALUES(%s,%s,%s)"
-
-        # Creating a connection cursor
-        cursor = connection.cursor()
+        query_string = "INSERT INTO emotions_table (name, emotion, date) VALUES(%s,%s,%s)"
 
         # Parse string to JSON object
         data = json.loads(data)
 
         # Iterate and add the information to the table
-        print("Adding Data")
+        records_to_insert = []
+        print("\nAdding Data...")
         for person in data:
-            print(" -",person['name'], person['emotion'], person['date'])
-            # Executing SQL Statements
-            cursor.execute(query_string, person['name'], person['emotion'], person['date'])
+            print(" -", person['name'], person['emotion'], person['date'])
+            records_to_insert.append(
+                (person['name'], person['emotion'], person['date']))
+
+        # Creating a connection cursor
+        cursor = connection.cursor()
+
+        # Executing SQL Statements
+        cursor.executemany(query_string, records_to_insert)
 
         # Saving the Actions performed on the DB
         connection.commit()
-        print(cursor.rowcount, "Record inserted successfully into table")
-        
+        print("\n✅ "+str(cursor.rowcount),
+              "record(s) inserted successfully into table")
+
     except mysql.connector.Error as error:
-        print("Failed to insert record: {}".format(error))
+        print("❎ Failed to insert record: {}".format(error))
     finally:
         if connection.is_connected():
-            
+
             # Close the cursor and connection
             cursor.close()
             connection.close()
-            print("MySQL connection is closed")
-     
+
 
 # Class save people information before sending it.
 class Person():
@@ -96,11 +127,13 @@ class Person():
     def to_json(self):
         return {
             "name": self.name,
-            "emotion": self.email,
+            "emotion": self.emotion,
             "date": self.date
         }
-        
+
 # Get method that return all the people information saved in the database
+
+
 @app.route('/', methods=['GET'])
 def get_records():
     try:
@@ -109,7 +142,6 @@ def get_records():
 
         # Query for Creating the table
         query_string = "SELECT * FROM emotions_table"
-
 
         # Creating a connection cursor
         cursor = connection.cursor()
@@ -127,23 +159,24 @@ def get_records():
         for row in records:
             person = Person(row[1], row[2], row[3])
             output.append(person.to_json())
-        print(output)
+
         # we close both the cursor and connection
         cursor.close()
         connection.close()
+
+        print("\n✅ "+str(len(output)),
+              "record(s) sent successfully")
         
         return jsonify(output)
 
     except mysql.connector.Error as error:
         print("Failed to create table in MySQL: {}".format(error))
-        return jsonify({'error':'Connection error. Data not found'})
+        return jsonify({'error': 'Connection error. Data not found'})
 
 
-def run():    
+def run():
     # Create table
     createTable()
-
+    delete_records()
     # Run api
     app.run(debug=False, host='0.0.0.0')
-    
-run()

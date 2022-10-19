@@ -6,7 +6,7 @@ from api import create_record
 # This functinon listen to the connection and acts when a message is added to the respective queue.
 # INPUT: body : message
 def on_message_received(ch, method, properties, body):
-    print(f'\n▶ received: "{body}"')
+    print(f'\n\n⭐ received: "{body}"')
     
     # Process the data received
     create_record(body)
