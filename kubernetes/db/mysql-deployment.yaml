@@ -22,10 +22,6 @@ spec:
                 secretKeyRef:
                   name: mysql-secret
                   key: password
-            - name: RABBIT_HOST
-              value: "rabbitmq-0.rabbitmq.rabbits.svc.cluster.local"
-            - name: RABBIT_PORT
-              value: "5672"
             - name: MYSQL_DATABASE
               value: "emotions_db"
             - name: MYSQL_USER
