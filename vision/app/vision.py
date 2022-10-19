@@ -25,7 +25,7 @@ def detect_emotions_cloud(n):
   
   # Check if there
   if not blob_list:
-    print("Bucket is empty")
+    print("💔 Bucket is empty")
     return []
   
   # List to save records

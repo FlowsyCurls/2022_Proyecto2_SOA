@@ -2,16 +2,19 @@
 # encoding: utf-8
 from flask import Flask, jsonify
 import json
+import os
 import mysql.connector
 
 app = Flask(__name__)
 
 # environment to connect to the database
+host = os.environ['HOST']
+port = os.environ['PORT']
 config = {
     'user': 'user',
     'password': 'password',
-    'host': 'localhost',
-    'port': '49153',
+    'host': host,
+    'port': port,
     'database': 'emotions_db'
 }
 
@@ -39,7 +42,7 @@ def createTable():
         # Saving the Actions performed on the DB
         connection.commit()
 
-        print("● Table created successfully ")
+        print("\n✅ Table created successfully")
 
     except mysql.connector.Error as error:
         print("❎ Failed to create table in MySQL: {}".format(error))
@@ -48,14 +51,15 @@ def createTable():
             cursor.close()
             connection.close()
 
+
 def delete_records():
     try:
         # Estabilishing  a connection cursor
         connection = mysql.connector.connect(**config)
-        
+
         # Query for Creating the table
         query_string = "DELETE FROM emotions_table"
-        
+
         # Creating a connection cursor
         cursor = connection.cursor()
 
@@ -65,7 +69,7 @@ def delete_records():
         # Saving the Actions performed on the DB
         connection.commit()
         print("\n✅ "+str(cursor.rowcount),
-              "record(s) deleted successfully from table")
+              "record(s) deleted successfully from table\n\n")
 
     except mysql.connector.Error as error:
         print("❎ Failed to delete record from table: {}".format(error))
@@ -73,8 +77,10 @@ def delete_records():
         if connection.is_connected():
             cursor.close()
             connection.close()
-            
+
 # This function insert single and multiple rows into the database table.
+
+
 def create_record(data):
     try:
         # Estabilishing  a connection cursor
@@ -166,7 +172,7 @@ def get_records():
 
         print("\n✅ "+str(len(output)),
               "record(s) sent successfully")
-        
+
         return jsonify(output)
 
     except mysql.connector.Error as error:
