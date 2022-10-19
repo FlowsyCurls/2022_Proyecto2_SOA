@@ -1,10 +1,10 @@
 from event_handler import consume
 from api import run
-import threading
+from time import sleep
+from threading import Thread
 
-# Create a thread and run the consumer function
-consume_thread = threading.Thread(target=consume, args=())
-consume_thread.start()
-
-# Run api
-run()
+# Create thread to run api and run the consumer function
+if __name__ == '__main__':
+    Thread(target=run).start()
+    sleep(5)
+    Thread(target=consume).start()
