@@ -1,14 +1,8 @@
 #!/usr/bin/env python
 # encoding: utf-8
-import time
-from flask import Flask, request, jsonify
-import os
+from flask import Flask, jsonify
 import json
 import mysql.connector
-
-# from event_handler import consume
-import threading
-
 
 app = Flask(__name__)
 
@@ -17,7 +11,7 @@ config = {
     'user': 'user',
     'password': 'password',
     'host': 'localhost',
-    'port': '49158',
+    'port': '64885',
     'database': 'emotions_db'
 }
 
@@ -151,3 +145,5 @@ def run():
 
     # Run api
     app.run(debug=False, host='0.0.0.0')
+    
+run()
