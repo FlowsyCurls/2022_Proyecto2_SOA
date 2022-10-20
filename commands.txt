@@ -2,6 +2,9 @@ UTILS COMMANDS
 
 #DOCKER
 
+# Get requirements
+python -m  pipreqs.pipreqs --encoding utf-8  .
+
 # Login
 docker login --username=<your-username>
 
@@ -66,18 +69,8 @@ kubectl delete -n rabbits -f ./kubernetes/vision
 kubectl -n rabbits get pods
 
 # use kubectl to forward the port
-kubectl port-forward service/mysql 8082:3306 -n rabbits
-kubectl port-forward service/backend 8081:5000 -n rabbits
-kubectl port-forward service/angular 8080:80 -n rabbits
+kubectl port-forward service/backend 8090:5000 -n rabbits
+kubectl port-forward service/angular 8091:80 -n rabbits
 kubectl -n rabbits port-forward rabbitmq-0 8080:15672
 
 kubectl describe pod -n rabbits mysql-7f8d5b56fc-b9bkx
-
-
-
-
-
-
-
-# Get requirements
-python -m  pipreqs.pipreqs --encoding utf-8  .

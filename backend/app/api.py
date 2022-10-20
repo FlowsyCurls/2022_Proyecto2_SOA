@@ -173,7 +173,9 @@ def get_records():
         print("\n✅ "+str(len(output)),
               "record(s) sent successfully")
 
-        return jsonify(output)
+        response = jsonify(output)
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        return response
 
     except mysql.connector.Error as error:
         print("Failed to create table in MySQL: {}".format(error))
