@@ -64,13 +64,37 @@ kubectl delete -n rabbits -f ./kubernetes/backend
 kubectl delete -n rabbits -f ./kubernetes/ui
 kubectl delete -n rabbits -f ./kubernetes/vision
 
-
 # get pods
 kubectl -n rabbits get pods
 
 # use kubectl to forward the port
+
 kubectl port-forward service/backend 8090:5000 -n rabbits
 kubectl port-forward service/angular 8091:80 -n rabbits
 kubectl -n rabbits port-forward rabbitmq-0 8080:15672
 
 kubectl describe pod -n rabbits mysql-7f8d5b56fc-b9bkx
+
+
+
+
+PASOS DE EJECUCION:
+# Ejecutar
+
+BUCKET:
+Cargar imagenes en:
+https://console.cloud.google.com/storage/browser/soa-vision-bucket;tab=objects?forceOnBucketsSortingFiltering=false&project=soa-proyecto2&prefix=&forceOnObjectsSortingFiltering=false
+
+1. rabbit
+  - kubectl -n rabbits port-forward rabbitmq-0 8080:15672
+  http://localhost:8081/
+
+2. db
+
+3. api
+ - kubectl port-forward service/backend 8090:5000 -n rabbits
+
+4. angular
+ - kubectl port-forward service/angular 8091:80 -n rabbits
+ http://localhost:8091/
+

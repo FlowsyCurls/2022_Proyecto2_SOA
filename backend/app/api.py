@@ -185,6 +185,6 @@ def get_records():
 def run():
     # Create table
     createTable()
-    delete_records()
+    # delete_records()
     # Run api
     app.run(debug=False, host='0.0.0.0')
