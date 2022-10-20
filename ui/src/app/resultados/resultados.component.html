@@ -1,0 +1,31 @@
+
+<nav class="navbar navbar-expand-sm">
+  <div class="container-fluid">
+    <div class="topnav-left">
+      <a class="navbar-brand"><img class="img-responsive navbar-brand" id="logo" src="https://i.pinimg.com/originals/af/aa/8f/afaa8f5384fdc8c23ec0431b621b64e6.jpg"></a>
+      <a style="margin-right: 20px; text-decoration: none; color: white" ><b>Análisis de Resultados</b></a>
+
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div style="max-height:700px; width:95%; overflow-y: scroll; ">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">Nombre</th>
+          <th scope="col">Emocion</th>
+          <th scope="col">Fecha</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let res of resultados">
+          <th scope="col">{{res.name}}</th>
+          <th scope="col">{{res.emotion}}</th>
+          <th scope="col">{{res.date}}</th>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

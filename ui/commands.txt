@@ -1,0 +1,100 @@
+UTILS COMMANDS
+
+#DOCKER
+
+# Get requirements
+python -m  pipreqs.pipreqs --encoding utf-8  .
+
+# Login
+docker login --username=<your-username>
+
+# see current docker images
+docker images
+
+
+# create image
+docker build --tag <dockerhub-username>/<repo-name>:<version> .
+docker build --tag jeykime/vision:latest .
+
+
+# to change image name
+docker tag <your-image-id> <dockerhub-username>/<repo-name>:<tag>
+
+
+# push image in docker hub
+docker push <dockerhub-username>/<repo-name>
+
+# Run with shell
+docker run --rm -it test sh
+
+
+# RUN DATABASE image
+docker run --name db -p 3306 -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=emotions_db -e MYSQL_USER=user -e MYSQL_PASSWORD=password -d mysql:latest
+
+# RUN RABBIT image
+docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3.9-management
+
+
+
+
+
+# MINIKUBE
+
+# start
+minikube start
+
+# give google permision to use pods
+minikube addons enable gcp-auth
+
+# set namespace
+kubectl create ns rabbits
+
+# apply all yaml file in kubernetes
+kubectl apply -n rabbits -f ./kubernetes/rabbit -f ./kubernetes/db -f ./kubernetes/backend -f ./kubernetes/ui -f ./kubernetes/vision
+kubectl apply -n rabbits -f ./kubernetes/rabbit
+kubectl apply -n rabbits -f ./kubernetes/db
+kubectl apply -n rabbits -f ./kubernetes/backend
+kubectl apply -n rabbits -f ./kubernetes/ui
+kubectl apply -n rabbits -f ./kubernetes/vision
+
+# delete all services file in kubernetes
+kubectl delete -n rabbits -f ./kubernetes/rabbit
+kubectl delete -n rabbits -f ./kubernetes/db
+kubectl delete -n rabbits -f ./kubernetes/backend
+kubectl delete -n rabbits -f ./kubernetes/ui
+kubectl delete -n rabbits -f ./kubernetes/vision
+
+# get pods
+kubectl -n rabbits get pods
+
+# use kubectl to forward the port
+
+kubectl port-forward service/backend 8090:5000 -n rabbits
+kubectl port-forward service/angular 8091:80 -n rabbits
+kubectl -n rabbits port-forward rabbitmq-0 8080:15672
+
+kubectl describe pod -n rabbits mysql-7f8d5b56fc-b9bkx
+
+
+
+
+PASOS DE EJECUCION:
+# Ejecutar
+
+BUCKET:
+Cargar imagenes en:
+https://console.cloud.google.com/storage/browser/soa-vision-bucket;tab=objects?forceOnBucketsSortingFiltering=false&project=soa-proyecto2&prefix=&forceOnObjectsSortingFiltering=false
+
+1. rabbit
+kubectl -n rabbits port-forward rabbitmq-0 8085:15672
+http://localhost:8085/
+
+2. db
+
+3. api
+kubectl port-forward service/backend 8090:5000 -n rabbits
+
+4. angular
+kubectl port-forward service/angular 8091:80 -n rabbits
+http://localhost:8091/
+

@@ -1,0 +1,33 @@
+[
+  {
+    "name": "Arthur",
+    "emotion": "angry",
+    "date": "17/10/2022 07: 01 PM"
+  },
+  {
+    "name": "Cassandra",
+    "emotion": "sad",
+    "date": "17/10/2022 07: 01 PM"
+  },
+  {
+    "name": "Evelyn",
+    "emotion": "undetermined",
+    "date": "17/10/2022 07: 01 PM"
+  }
+]
+"Datab'[{
+  "name": "Arthur",
+  "emotion": "angry",
+  "date": "17/10/2022 07:01 PM"
+},
+{
+  "name": "Cassandra",
+  "emotion": "sad",
+  "date": "17/10/2022 07:01 PM"
+},
+{
+  "name": "Evelyn",
+  "emotion": "undetermined",
+  "date": "17/10/2022 07:01 PM"
+}
+]
