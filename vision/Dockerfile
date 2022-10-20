@@ -4,6 +4,10 @@ FROM python:3.10
 # Copy dependencies txt
 COPY requirements.txt .
 
+# Show python prints in kubernetes logs
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONIOENCODING=UTF-8
+
 # Install dependencies or requirements
 RUN pip install --no-cache-dir --upgrade pip \
   && pip install --no-cache-dir -r requirements.txt
@@ -18,4 +22,4 @@ WORKDIR /app
 COPY . /app
 
 # Default executable of a Docker image
-CMD ["python", "main.py"]
+CMD ["python","-u", "main.py"]

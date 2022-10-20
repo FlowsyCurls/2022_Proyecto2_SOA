@@ -19,7 +19,7 @@ def detect_emotions_cloud(n):
   # Get GCS bucket
   storage_client = storage.Client.from_service_account_json(apikey)
   bucket = storage_client.bucket(bucketname)
-  
+
   # Get images paths (only one MUST be in bucket)
   blob_list = list(bucket.list_blobs())
   
@@ -99,9 +99,9 @@ def delete_blob(bucket, blob_name):
 
 # Publish emotions to the queue
 def publish_emotions():
-  print()
   # how many images to analyze
   n = 3
+  print("\n⌛ Analyzing images...\n")
   json = detect_emotions_cloud(n)
   if json: produce(json)
 
@@ -110,7 +110,7 @@ def routine():
   # After every x seconds.
   schedule.every(10).seconds.do(publish_emotions)
   
-  # Every 30  or 00:00 time.
+  # Every 30 or 00:00 time.
   # schedule.every().day.at("00:00").do(publish_emotions)
   
   # Loop

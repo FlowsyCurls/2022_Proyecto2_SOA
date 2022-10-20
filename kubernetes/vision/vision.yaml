@@ -19,7 +19,7 @@ spec:
           image: jeykime/vision:latest
           imagePullPolicy: Always
           ports:
-            - containerPort: 81
+            - containerPort: 80
           env:
             - name: RABBIT_HOST
               value: "rabbitmq-0.rabbitmq.rabbits.svc.cluster.local"
@@ -38,5 +38,5 @@ spec:
     app: vision
   ports:
     - protocol: TCP
-      port: 81
+      port: 80
       targetPort: http
