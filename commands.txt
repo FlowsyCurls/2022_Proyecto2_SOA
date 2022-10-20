@@ -86,15 +86,15 @@ Cargar imagenes en:
 https://console.cloud.google.com/storage/browser/soa-vision-bucket;tab=objects?forceOnBucketsSortingFiltering=false&project=soa-proyecto2&prefix=&forceOnObjectsSortingFiltering=false
 
 1. rabbit
-  - kubectl -n rabbits port-forward rabbitmq-0 8080:15672
-  http://localhost:8081/
+kubectl -n rabbits port-forward rabbitmq-0 8085:15672
+http://localhost:8085/
 
 2. db
 
 3. api
- - kubectl port-forward service/backend 8090:5000 -n rabbits
+kubectl port-forward service/backend 8090:5000 -n rabbits
 
 4. angular
- - kubectl port-forward service/angular 8091:80 -n rabbits
- http://localhost:8091/
+kubectl port-forward service/angular 8091:80 -n rabbits
+http://localhost:8091/
 
