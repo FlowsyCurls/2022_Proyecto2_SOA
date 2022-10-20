@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vision
+  labels:
+    app: vision
+spec:
+  selector:
+    matchLabels:
+      app: vision
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: vision
+    spec:
+      containers:
+        - name: vision
+          image: jeykime/vision:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          env:
+            - name: RABBIT_HOST
+              value: "rabbitmq-0.rabbitmq.rabbits.svc.cluster.local"
+            - name: RABBIT_PORT
+              value: "5672"
+            - name: RABBIT_PRODUCER_QUEUE
+              value: "emotions_queue"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vision
+spec:
+  selector:
+    app: vision
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: http
