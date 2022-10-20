@@ -75,12 +75,12 @@ def delete_records():
         print("❎ Failed to delete record from table: {}".format(error))
     finally:
         if connection.is_connected():
+            
+            # Close the cursor and connection
             cursor.close()
             connection.close()
 
 # This function insert single and multiple rows into the database table.
-
-
 def create_record(data):
     try:
         # Estabilishing  a connection cursor

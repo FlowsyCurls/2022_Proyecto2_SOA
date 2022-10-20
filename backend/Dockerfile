@@ -18,4 +18,4 @@ WORKDIR /app
 COPY . /app
 
 # Default executable of a Docker image
-CMD ["python", "main.py"]
+CMD ["python","-u","main.py"]
