@@ -47,24 +47,37 @@ minikube addons enable gcp-auth
 kubectl create ns rabbits
 
 # apply all yaml file in kubernetes
+kubectl apply -n rabbits -f ./kubernetes/rabbit -f ./kubernetes/db -f ./kubernetes/backend -f ./kubernetes/ui -f ./kubernetes/vision
 kubectl apply -n rabbits -f ./kubernetes/rabbit
 kubectl apply -n rabbits -f ./kubernetes/db
+kubectl apply -n rabbits -f ./kubernetes/backend
 kubectl apply -n rabbits -f ./kubernetes/ui
 kubectl apply -n rabbits -f ./kubernetes/vision
-kubectl apply -n rabbits -f ./kubernetes/backend
 
 # delete all services file in kubernetes
 kubectl delete -n rabbits -f ./kubernetes/rabbit
 kubectl delete -n rabbits -f ./kubernetes/db
+kubectl delete -n rabbits -f ./kubernetes/backend
 kubectl delete -n rabbits -f ./kubernetes/ui
 kubectl delete -n rabbits -f ./kubernetes/vision
-kubectl delete -n rabbits -f ./kubernetes/backend
+
 
 # get pods
 kubectl -n rabbits get pods
 
 # use kubectl to forward the port
+kubectl port-forward service/mysql 8082:3306 -n rabbits
+kubectl port-forward service/backend 8081:5000 -n rabbits
 kubectl port-forward service/angular 8080:80 -n rabbits
 kubectl -n rabbits port-forward rabbitmq-0 8080:15672
 
 kubectl describe pod -n rabbits mysql-7f8d5b56fc-b9bkx
+
+
+
+
+
+
+
+# Get requirements
+python -m  pipreqs.pipreqs --encoding utf-8  .
